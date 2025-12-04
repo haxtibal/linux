@@ -159,72 +159,72 @@ position p_splice_write_f;
   splice_write_f@p_splice_write_f(...) {...}
 
 
-@ script:python depends on read_fn @
+@ script:python@
 fops << fops0.fops;
 read_f << has_read.read_f;
 p << read_fn.p_read_f;
 @@
-print(f"read ({fops}): {read_f} {p[0].file}:{p[0].line}")
+print(f"read ({fops}): {read_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on read_iter_fn @
+@script:python@
 fops << fops0.fops;
 read_iter_f << has_read_iter.read_iter_f;
 p << read_iter_fn.p_read_iter_f;
 @@
-print(f"read_iter ({fops}): {read_iter_f} {p[0].file}:{p[0].line}")
+print(f"read_iter ({fops}): {read_iter_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on write_fn @
+@script:python@
 fops << fops0.fops;
 write_f << has_write.write_f;
 p << write_fn.p_write_f;
 @@
-print(f"write ({fops}): {write_f} {p[0].file}:{p[0].line}")
+print(f"write ({fops}): {write_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on write_iter_fn @
+@script:python@
 fops << fops0.fops;
 write_iter_f << has_write_iter.write_iter_f;
 p << write_iter_fn.p_write_iter_f;
 @@
-print(f"write_iter ({fops}): {write_iter_f} {p[0].file}:{p[0].line}")
+print(f"write_iter ({fops}): {write_iter_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on llseek_fn @
+@script:python@
 fops << fops0.fops;
 llseek_f << has_llseek.llseek_f;
 p << llseek_fn.p_llseek_f;
 @@
-print(f"llseek ({fops}): {llseek_f} {p[0].file}:{p[0].line}")
+print(f"llseek ({fops}): {llseek_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on mmap_fn @
+@script:python@
 fops << fops0.fops;
 mmap_f << has_mmap.mmap_f;
 p << mmap_fn.p_mmap_f;
 @@
-print(f"mmap_f ({fops}): {mmap_f} {p[0].file}:{p[0].line}")
+print(f"mmap_f ({fops}): {mmap_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on copy_file_range_fn @
+@script:python@
 fops << fops0.fops;
 copy_file_range_f << has_copy_file_range.copy_file_range_f;
 p << copy_file_range_fn.p_copy_file_range_f;
 @@
-print(f"copy_file_range ({fops}): {copy_file_range_f} {p[0].file}:{p[0].line}")
+print(f"copy_file_range ({fops}): {copy_file_range_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on remap_file_range_fn @
+@script:python@
 fops << fops0.fops;
 remap_file_range_f << has_remap_file_range.remap_file_range_f;
 p << remap_file_range_fn.p_remap_file_range_f;
 @@
-print(f"remap_file_range ({fops}): {remap_file_range_f} {p[0].file}:{p[0].line}")
+print(f"remap_file_range ({fops}): {remap_file_range_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on splice_read_fn @
+@script:python@
 fops << fops0.fops;
 splice_read_f << has_splice_read.splice_read_f;
 p << splice_read_fn.p_splice_read_f;
 @@
-print(f"splice_read ({fops}): {splice_read_f} {p[0].file}:{p[0].line}")
+print(f"splice_read ({fops}): {splice_read_f} at {p[0].file}:{p[0].line}")
 
-@ script:python depends on splice_write_fn @
+@script:python@
 fops << fops0.fops;
 splice_write_f << has_splice_write.splice_write_f;
 p << splice_write_fn.p_splice_write_f;
 @@
-print(f"splice_write ({fops}): {splice_write_f} {p[0].file}:{p[0].line}")
+print(f"splice_write ({fops}): {splice_write_f} at {p[0].file}:{p[0].line}")
