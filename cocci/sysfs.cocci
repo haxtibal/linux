@@ -37,66 +37,50 @@ position p_fn;
 
 @device_attr_ro@
 declarer name DEVICE_ATTR_RO;
-typedef __DEVICE_ATTR_RO_T;
 identifier attr_name;
-fresh identifier show_fn_name = attr_name ## "_show";
 @@
   DEVICE_ATTR_RO(attr_name);
-+ __DEVICE_ATTR_RO_T attr_name = show_fn_name;
 
-/* Helper construct needed to match on concatenated identifier. */
-@device_attr_ro_2@
-identifier device_attr_ro.attr_name;
-identifier show_fn;
+@script:python device_attr_ro_funcs@
+attr_name << device_attr_ro.attr_name;
+SHOW;
 @@
-  __DEVICE_ATTR_RO_T attr_name = show_fn;
+coccinelle.SHOW = cocci.make_ident(attr_name + "_show")
 
 @device_attr_ro_show_fn@
-identifier device_attr_ro_2.show_fn;
+identifier device_attr_ro_funcs.SHOW;
 position p_fn;
 @@
-  show_fn@p_fn(...) {...}
+  SHOW@p_fn(...) {...}
 
 
 // DEVICE_ATTR_RW
 
 @device_attr_rw@
 declarer name DEVICE_ATTR_RW;
-typedef __DEVICE_ATTR_RW_SHOW_T;
-typedef __DEVICE_ATTR_RW_STORE_T;
 identifier attr_name;
-fresh identifier show_fn_name = attr_name ## "_show";
-fresh identifier store_fn_name = attr_name ## "_store";
 @@
   DEVICE_ATTR_RW(attr_name);
-+ __DEVICE_ATTR_RW_SHOW_T attr_name = show_fn_name;
-+ __DEVICE_ATTR_RW_STORE_T attr_name = store_fn_name;
 
-/* Helper construct needed to match on concatenated identifier. */
-@device_attr_rw_show2@
-identifier device_attr_rw.attr_name;
-identifier fn;
+@script:python device_attr_rw_funcs@
+attr_name << device_attr_rw.attr_name;
+SHOW;
+STORE;
 @@
-  __DEVICE_ATTR_RW_SHOW_T attr_name = fn;
-
-/* Helper construct needed to match on concatenated identifier. */
-@device_attr_rw_store2@
-identifier device_attr_rw.attr_name;
-identifier fn;
-@@
-  __DEVICE_ATTR_RW_STORE_T attr_name = fn;
+coccinelle.SHOW = cocci.make_ident(attr_name + "_show")
+coccinelle.STORE = cocci.make_ident(attr_name + "_store")
 
 @device_attr_rw_show_fn@
-identifier device_attr_rw_show2.fn;
+identifier device_attr_rw_funcs.SHOW;
 position p_fn;
 @@
-  fn@p_fn(...) {...}
+  SHOW@p_fn(...) {...}
 
 @device_attr_rw_store_fn@
-identifier device_attr_rw_store2.fn;
+identifier device_attr_rw_funcs.STORE;
 position p_fn;
 @@
-  fn@p_fn(...) {...}
+  STORE@p_fn(...) {...}
 
 
 // Report
@@ -105,28 +89,28 @@ position p_fn;
 fn << device_attr.show_fn;
 p << device_attr_show_fn.p_fn;
 @@
-print(f"sysfs show_fn: {fn} at {p[0].file}:{p[0].line}")
+print(f"sysfs show: {fn} at {p[0].file}:{p[0].line}")
 
 @script:python@
 fn << device_attr.store_fn;
 p << device_attr_store_fn.p_fn;
 @@
-print(f"sysfs store_fn: {fn} at {p[0].file}:{p[0].line}")
+print(f"sysfs store: {fn} at {p[0].file}:{p[0].line}")
 
 @script:python@
-fn << device_attr_ro_2.show_fn;
+fn << device_attr_ro_funcs.SHOW;
 p << device_attr_ro_show_fn.p_fn;
 @@
-print(f"sysfs show_fn (RO): {fn} at {p[0].file}:{p[0].line}")
+print(f"sysfs show (RO): {fn} at {p[0].file}:{p[0].line}")
 
 @script:python@
-fn << device_attr_rw_show2.fn;
+fn << device_attr_rw_funcs.SHOW;
 p << device_attr_rw_show_fn.p_fn;
 @@
-print(f"sysfs show_fn (RW): {fn} at {p[0].file}:{p[0].line}")
+print(f"sysfs show (RW): {fn} at {p[0].file}:{p[0].line}")
 
 @script:python@
-fn << device_attr_rw_store2.fn;
+fn << device_attr_rw_funcs.STORE;
 p << device_attr_rw_store_fn.p_fn;
 @@
-print(f"sysfs store_fn (RW): {fn} at {p[0].file}:{p[0].line}")
+print(f"sysfs store (RW): {fn} at {p[0].file}:{p[0].line}")
