@@ -1,0 +1,44 @@
+name: Kernel Requirements CI
+on:
+  push:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    name: Validate and render requirements
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Install StrictDoc from WIP branch
+        run: pipx install git+https://github.com/haxtibal/strictdoc.git@tdmg/md_fwd_relations
+
+      - name: strictdoc export
+        run: strictdoc export --output ${{ runner.temp }}/export .
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/export/html
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
